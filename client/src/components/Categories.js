@@ -32,7 +32,7 @@ const Categories = () => {
   return (
     <>
       <Link
-        to={`/create/${location.search}`}
+        to='/create'
         style={{ textDecoration: "none" }}
       >
         <Button variant="contained" className={classes.write}>
