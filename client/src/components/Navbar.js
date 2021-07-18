@@ -24,8 +24,6 @@ const Navbar = () => {
         <Link to="/">
           <Typography>Home</Typography>
         </Link>
-        <Typography>About</Typography>
-        <Typography>Contect</Typography>
         <Typography>Login</Typography>
       </Toolbar>
     </AppBar>

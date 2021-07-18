@@ -13,7 +13,7 @@ const Posts = () => {
     };
     fetchData();
   }, [search]);
-  return posts.map((post) => (
+  return posts?.map((post) => (
     <Grid item lg={3} sm={4} sx={12}>
       <Link
         to={`/details/${post._id}`}
