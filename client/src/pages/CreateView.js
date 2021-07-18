@@ -48,7 +48,7 @@ const initialValues = {
   picture: "",
   username: "Tushar",
   categories: "all",
-  createDate: new Date(),
+  createdDate: new Date(),
 };
 const CreateView = () => {
   const history = useHistory();

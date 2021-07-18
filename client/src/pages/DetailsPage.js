@@ -1,6 +1,8 @@
 import { Box, makeStyles, Typography, Grid } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
+import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { getPost, deleteBlog } from "../services/api";
 const useStyle = makeStyles((theme) => ({
   container: {
     margin: "50px 100px",
@@ -41,27 +43,50 @@ const useStyle = makeStyles((theme) => ({
     color: "inherit",
   },
 }));
-const DetailsPage = () => {
+const DetailsPage = ({ match, history }) => {
   const classes = useStyle();
   const url =
     "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80";
+
+  const [post, setPost] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      let data = await getPost(match.params.id);
+      setPost(data);
+    };
+    fetchData();
+  }, [match]);
+
+  const deletePost = async () => {
+    await deleteBlog(post._id);
+    history.push("/");
+  };
   return (
     <Box className={classes.container}>
-      <img className={classes.image} src={url} alt="cover" />
+      <img className={classes.image} src={post.picture || url} alt="cover" />
       <Box className={classes.icons}>
-        <Link to="/update">
+        <Link to={`/update/${post._id}`}>
           <Edit className={classes.icon} color="primary" />
         </Link>
-        <Delete className={classes.icon} color="error" />
+        <Delete
+          onClick={() => deletePost()}
+          className={classes.icon}
+          color="error"
+        />
       </Box>
-      <Typography className={classes.heading}>Title of the blog</Typography>
+      <Typography className={classes.heading}>{post.title}</Typography>
       <Box className={classes.author}>
-        <Typography>
-          Author :<span style={{ fontWeight: "600" }}>Tushar</span>{" "}
+        <Link className={classes.link} to={`/?username${post.username}`}>
+          <Typography>
+            Author: {post.username}
+            <span style={{ fontWeight: "600" }}>Tushar</span>
+          </Typography>
+        </Link>
+        <Typography style={{ marginLeft: "auto" }}>
+          {new Date(post.createdDate).toDateString()}
         </Typography>
-        <Typography style={{ marginLeft: "auto" }}>2020 8 17</Typography>
       </Box>
-      <Typography>this is hmmmmmmmmmmmm</Typography>
+      <Typography>{post.description}</Typography>
     </Box>
   );
 };
